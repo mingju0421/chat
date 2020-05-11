@@ -1,7 +1,7 @@
 <template>
     <el-row class="chatPage">
         <el-col :span="6">
-            <List />
+            <List class="列表边框"/>
         </el-col>
         <el-col :span="18">
             <Chat />
@@ -28,5 +28,8 @@ export default class HelloWorld extends Vue {
 }
 .el-col {
     height: 100%;
+}
+.列表边框{
+    border-right: 1px solid #ccc;
 }
 </style>
