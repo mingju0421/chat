@@ -28,11 +28,23 @@ app.ws.use((ctx, next) => {
     let message = null;
     ctx.websocket.on("message", opt => {
         message = JSON.parse(opt);
-        if (message === "ping") {
-            ctx.websocket.send("pong");
+        if (message.type === "ping") {
+            let msg = { type: "pong" };
+            ctx.websocket.send(JSON.stringify(msg));
+        } else {
+            console.log(message);
+            let msg = {
+                type: "send",
+                id: "463",
+                msg: {
+                    message: "你好啊",
+                    avatar: "https://tva1.sinaimg.cn/large/007S8ZIlly1gen70l163oj30bu0c4dnf.jpg"
+                }
+            };
+            ctx.websocket.send(opt);
+            ctx.websocket.send(JSON.stringify(msg));
         }
 
-        console.log(message);
         // message = JSON.parse(opt);
         // console.log(message, "~~~~~~~~~");
         // if (message.type == "goOnline") {
@@ -42,7 +54,6 @@ app.ws.use((ctx, next) => {
         //         }
         //     });
         // }
-        ctx.websocket.send(opt);
     });
     ctx.websocket.on("close", opt => {
         for (let i = 0; i < conversationList.length; i++) {

@@ -90,9 +90,12 @@ class WebSocketClass {
     getMessage() {
         this.ws!.onmessage = e => {
             this.heartCheck.reset().start();
-            const data = JSON.parse(e.data);
-            console.log(data);
-            this.callback && this.callback(data);
+            try {
+                const data = JSON.parse(e.data);
+                if (data.type !== "pong") this.callback && this.callback(data);
+            } catch (err) {
+                console.log(e.data);
+            }
         };
     }
     close() {
